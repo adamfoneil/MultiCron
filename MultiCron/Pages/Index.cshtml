@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>Jobs</h1>
+
+<ul>
+    @foreach (var item in Model.Switchboard.Jobs)
+    {
+        <li>
+            <strong>@item.Key</strong>
+            <form method="post" asp-page-handler="ToggleJob">
+                <input type="hidden" name="jobKey" value="@item.Key" />
+                <span>Status: @(item.Value ? "Enabled" : "Disabled")</span>
+                <button type="submit">Toggle</button>
+            </form>
+        </li>
+    }
+</ul>
