@@ -19,7 +19,7 @@ public class IndexModel(
     {
         if (Switchboard.Jobs.TryGetValue(jobKey, out bool value))
         {
-            Switchboard.Jobs[jobKey] = Switchboard.Jobs[jobKey] = !value;
+            Switchboard.Jobs[jobKey] = !value;
         }
         return RedirectToPage();
     }

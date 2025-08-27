@@ -11,7 +11,10 @@ internal static class JobSetup
 		services.AddScheduler(); // main Coravel service		
 		services.AddSingleton<JobOne>();
 		services.AddSingleton<JobTwo>();
-		services.AddSingleton(sp => new Switchboard(services)); // controls which jobs are active
+
+		// Collect job names
+		var jobNames = new[] { nameof(JobOne), nameof(JobTwo) };
+		services.AddSingleton(new Switchboard(jobNames)); // controls which jobs are active
 	}
 
 	internal static void ScheduleJobs(this IServiceProvider provider)

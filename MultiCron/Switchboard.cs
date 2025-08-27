@@ -1,17 +1,10 @@
-﻿
-namespace MultiCron;
+﻿namespace MultiCron;
 
-public class Switchboard(IServiceCollection services)
+public class Switchboard(IEnumerable<string> jobNames)
 {
-	private readonly Dictionary<string, bool> _jobs = FindJobs(services);
+    private readonly Dictionary<string, bool> _jobs = jobNames.Distinct().ToDictionary(name => name, _ => true);
 
-	public Dictionary<string, bool> Jobs => _jobs;
+    public Dictionary<string, bool> Jobs => _jobs;
 
-	public bool IsDisabled() => _jobs.TryGetValue(GetType().Name, out var isEnabled) && !isEnabled;
-
-	private static Dictionary<string, bool> FindJobs(IServiceCollection services) => 
-		services.Where(s => s.ServiceType.IsSubclassOf(typeof(Jobs.JobBase)))
-			.Select(s => s.ServiceType.Name)
-			.Distinct()
-			.ToDictionary(name => name, _ => true);
+    public bool IsDisabled(string jobName) => _jobs.TryGetValue(jobName, out var isEnabled) && !isEnabled;
 }
